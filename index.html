@@ -3,40 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calcolatore Vita Completo</title>
+  <title>Calcolatore Vita Completo Avanzato</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       background: #f0f2f5;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 40px 10px;
+      padding: 30px 15px;
     }
     .container {
-      max-width: 720px;
+      max-width: 800px;
       background: #fff;
-      padding: 30px;
+      padding: 25px 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
       margin: auto;
     }
     h1 {
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       font-weight: 700;
       color: #212529;
+      text-align: center;
     }
     .result-text {
       margin-top: 20px;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 600;
       color: #222;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Calcolatore Vita Completo</h1>
+    <h1>Calcolatore Vita Completo Avanzato</h1>
     <form id="vitaForm" class="row g-3">
+      <!-- Data e luogo -->
       <div class="col-md-6">
         <label for="dataNascita" class="form-label">Data di nascita</label>
         <input type="date" class="form-control" id="dataNascita" required />
@@ -45,6 +48,19 @@
         <label for="luogo" class="form-label">Città di residenza</label>
         <input type="text" class="form-control" id="luogo" placeholder="Es. Milano" required />
       </div>
+
+      <!-- Sesso -->
+      <div class="col-md-6">
+        <label for="sesso" class="form-label">Sesso</label>
+        <select id="sesso" class="form-select" required>
+          <option value="" disabled selected>Seleziona</option>
+          <option value="maschio">Maschio</option>
+          <option value="femmina">Femmina</option>
+          <option value="altro">Altro/Preferisco non dire</option>
+        </select>
+      </div>
+
+      <!-- Altezza e peso -->
       <div class="col-md-6">
         <label for="altezza" class="form-label">Altezza (cm)</label>
         <input type="number" class="form-control" id="altezza" min="50" max="250" required />
@@ -53,20 +69,118 @@
         <label for="peso" class="form-label">Peso (kg)</label>
         <input type="number" class="form-control" id="peso" min="20" max="300" required />
       </div>
+
+      <!-- Sonno -->
       <div class="col-md-6">
         <label for="sonno" class="form-label">Ore di sonno giornaliere</label>
         <input type="number" class="form-control" id="sonno" min="0" max="24" step="0.5" value="7" required />
       </div>
+
+      <!-- Dipendenza social -->
       <div class="col-md-6">
-        <label for="lavoro" class="form-label">Tipo di lavoro</label>
-        <select id="lavoro" class="form-select" required>
-          <option value="basso" selected>Basso stress / sedentario</option>
-          <option value="medio">Moderato stress / attività moderata</option>
-          <option value="alto">Alto stress / lavoro fisico intenso</option>
+        <label for="dipendenzaSocial" class="form-label">Dipendenza da social e schermo</label>
+        <select id="dipendenzaSocial" class="form-select" required>
+          <option value="bassa">Bassa (meno di 1 ora al giorno)</option>
+          <option value="media">Media (1-3 ore al giorno)</option>
+          <option value="alta">Alta (oltre 3 ore al giorno)</option>
         </select>
       </div>
+
+      <!-- Fumo -->
+      <div class="col-md-6">
+        <label for="fumo" class="form-label">Fumo</label>
+        <select id="fumo" class="form-select" required>
+          <option value="mai">Mai fumato</option>
+          <option value="ex">Ex fumatore</option>
+          <option value="attuale">Fumatore attuale</option>
+        </select>
+      </div>
+      <div class="col-md-6" id="sigaretteContainer" style="display:none;">
+        <label for="sigarette" class="form-label">Sigarette al giorno</label>
+        <input type="number" class="form-control" id="sigarette" min="1" max="100" value="10" />
+      </div>
+
+      <!-- Alimentazione -->
+      <div class="col-md-6">
+        <label for="alimentazione" class="form-label">Alimentazione</label>
+        <select id="alimentazione" class="form-select" required>
+          <option value="sana">Equilibrata e sana</option>
+          <option value="media">Moderata</option>
+          <option value="malsana">Poco sana</option>
+        </select>
+      </div>
+
+      <!-- Droghe e alcol -->
+      <div class="col-md-6">
+        <label for="drogaAlcol" class="form-label">Consumo droghe / alcol</label>
+        <select id="drogaAlcol" class="form-select" required>
+          <option value="mai">Mai</option>
+          <option value="raro">Raro</option>
+          <option value="moderato">Moderato</option>
+          <option value="frequente">Frequente</option>
+        </select>
+      </div>
+
+      <!-- Malattie croniche -->
+      <fieldset class="col-12">
+        <legend>Malattie croniche</legend>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="diabete" id="diabete" />
+          <label class="form-check-label" for="diabete">Diabete</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="ipertensione" id="ipertensione" />
+          <label class="form-check-label" for="ipertensione">Ipertensione</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="cardiopatie" id="cardiopatie" />
+          <label class="form-check-label" for="cardiopatie">Malattie cardiache</label>
+        </div>
+      </fieldset>
+
+      <!-- Attività fisica -->
+      <div class="col-md-6">
+        <label for="attivitaFisica" class="form-label">Attività fisica settimanale</label>
+        <select id="attivitaFisica" class="form-select" required>
+          <option value="nessuna">Nessuna</option>
+          <option value="leggera">Leggera (1-2 giorni)</option>
+          <option value="moderata">Moderata (3-4 giorni)</option>
+          <option value="intensa">Intensa (5+ giorni)</option>
+        </select>
+      </div>
+
+      <!-- Genetica familiare -->
+      <div class="col-md-6">
+        <label for="geneticaFamiliare" class="form-label">Storia familiare di malattie ereditarie</label>
+        <select id="geneticaFamiliare" class="form-select" required>
+          <option value="no">No</option>
+          <option value="si">Sì</option>
+        </select>
+      </div>
+
+      <!-- Fattori ambientali -->
+      <div class="col-md-12">
+        <label for="fattoriAmbientali" class="form-label">Fattori ambientali zona (inquinamento, clima)</label>
+        <select id="fattoriAmbientali" class="form-select" required>
+          <option value="basso">Basso rischio</option>
+          <option value="medio">Rischio medio</option>
+          <option value="alto">Alto rischio</option>
+        </select>
+      </div>
+
+      <!-- Tipo di lavoro -->
+      <div class="col-md-12">
+        <label for="tipoLavoro" class="form-label">Tipo di lavoro (stress/esposizione)</label>
+        <select id="tipoLavoro" class="form-select" required>
+          <option value="sedentario">Sedentario, poco stress</option>
+          <option value="moderato">Moderato stress / attività moderata</option>
+          <option value="intenso">Alto stress / lavoro fisico intenso</option>
+          <option value="esposizione">Lavoro con esposizione a rischi (chimici, agenti nocivi)</option>
+        </select>
+      </div>
+
       <div class="col-12 d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary btn-lg mt-3">Calcola</button>
+        <button type="submit" class="btn btn-primary btn-lg mt-3">Calcola Aspettativa di Vita</button>
       </div>
     </form>
 
@@ -74,89 +188,152 @@
     <canvas id="chartVita" style="display:none; margin-top:30px;" width="400" height="250"></canvas>
   </div>
 
-<script>
-  const form = document.getElementById('vitaForm');
-  const risultato = document.getElementById('risultato');
-  const ctx = document.getElementById('chartVita').getContext('2d');
-  let chart = null;
+  <script>
+    // Mostra campo sigarette solo se fumatore attuale
+    const fumoSelect = document.getElementById('fumo');
+    const sigaretteContainer = document.getElementById('sigaretteContainer');
+    fumoSelect.addEventListener('change', () => {
+      if (fumoSelect.value === 'attuale') {
+        sigaretteContainer.style.display = 'block';
+        document.getElementById('sigarette').setAttribute('required', 'required');
+      } else {
+        sigaretteContainer.style.display = 'none';
+        document.getElementById('sigarette').removeAttribute('required');
+      }
+    });
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
+    const form = document.getElementById('vitaForm');
+    const risultato = document.getElementById('risultato');
+    const ctx = document.getElementById('chartVita').getContext('2d');
+    let chart = null;
 
-    const dataNascita = new Date(document.getElementById('dataNascita').value);
-    const oggi = new Date();
-    let eta = oggi.getFullYear() - dataNascita.getFullYear();
-    const m = oggi.getMonth() - dataNascita.getMonth();
-    if (m < 0 || (m === 0 && oggi.getDate() < dataNascita.getDate())) {
-      eta--;
-    }
+    form.addEventListener('submit', e => {
+      e.preventDefault();
 
-    const altezza = parseFloat(document.getElementById('altezza').value);
-    const peso = parseFloat(document.getElementById('peso').value);
-    const sonno = parseFloat(document.getElementById('sonno').value);
-    const lavoro = document.getElementById('lavoro').value;
+      // Recupero dati
+      const dataNascita = new Date(document.getElementById('dataNascita').value);
+      const oggi = new Date();
+      let eta = oggi.getFullYear() - dataNascita.getFullYear();
+      const m = oggi.getMonth() - dataNascita.getMonth();
+      if (m < 0 || (m === 0 && oggi.getDate() < dataNascita.getDate())) {
+        eta--;
+      }
 
-    // Calcolo BMI
-    const bmi = peso / ((altezza / 100) ** 2);
-    let bmiClasse = '';
-    if (bmi < 18.5) bmiClasse = 'Sottopeso';
-    else if (bmi < 25) bmiClasse = 'Normale';
-    else if (bmi < 30) bmiClasse = 'Sovrappeso';
-    else bmiClasse = 'Obeso';
+      const sesso = document.getElementById('sesso').value;
+      const altezza = parseFloat(document.getElementById('altezza').value);
+      const peso = parseFloat(document.getElementById('peso').value);
+      const sonno = parseFloat(document.getElementById('sonno').value);
+      const dipendenzaSocial = document.getElementById('dipendenzaSocial').value;
+      const fumo = document.getElementById('fumo').value;
+      const sigarette = fumo === 'attuale' ? parseInt(document.getElementById('sigarette').value) : 0;
+      const alimentazione = document.getElementById('alimentazione').value;
+      const drogaAlcol = document.getElementById('drogaAlcol').value;
+      const diabete = document.getElementById('diabete').checked;
+      const ipertensione = document.getElementById('ipertensione').checked;
+      const cardiopatie = document.getElementById('cardiopatie').checked;
+      const attivitaFisica = document.getElementById('attivitaFisica').value;
+      const geneticaFamiliare = document.getElementById('geneticaFamiliare').value;
+      const fattoriAmbientali = document.getElementById('fattoriAmbientali').value;
+      const tipoLavoro = document.getElementById('tipoLavoro').value;
 
-    // Base aspettativa
-    const baseVita = 82; // media italiana, approssimativa
+      // Calcolo BMI
+      const bmi = peso / ((altezza / 100) ** 2);
+      let bmiClasse = '';
+      if (bmi < 18.5) bmiClasse = 'Sottopeso';
+      else if (bmi < 25) bmiClasse = 'Normale';
+      else if (bmi < 30) bmiClasse = 'Sovrappeso';
+      else bmiClasse = 'Obeso';
 
-    // Penalità
-    let penalita = 0;
+      // Base aspettativa media (approssimativa)
+      let baseVita = sesso === 'maschio' ? 80 : 85; // differenza media di longevità
 
-    // BMI
-    if (bmiClasse === 'Sottopeso') penalita += 2;
-    else if (bmiClasse === 'Sovrappeso') penalita += 3;
-    else if (bmiClasse === 'Obeso') penalita += 7;
+      // Penalità da fattori (esempi, puoi calibrare)
+      let penalita = 0;
 
-    // Sonno
-    if (sonno < 6) penalita += 5;
-    else if (sonno <= 7) penalita += 2;
+      // BMI
+      if (bmiClasse === 'Sottopeso') penalita += 2;
+      else if (bmiClasse === 'Sovrappeso') penalita += 3;
+      else if (bmiClasse === 'Obeso') penalita += 7;
 
-    // Lavoro
-    if (lavoro === 'medio') penalita += 3;
-    else if (lavoro === 'alto') penalita += 6;
+      // Sonno
+      if (sonno < 6) penalita += 5;
+      else if (sonno <= 7) penalita += 2;
 
-    // Calcolo aspettativa
-    const vitaStimata = Math.max(baseVita - penalita - eta, 0);
+      // Dipendenza social
+      if (dipendenzaSocial === 'media') penalita += 1;
+      else if (dipendenzaSocial === 'alta') penalita += 3;
 
-    // Mostra risultato
-    risultato.textContent = `Età: ${eta} anni | BMI: ${bmi.toFixed(1)} (${bmiClasse}) | Aspettativa di vita residua stimata: ${vitaStimata} anni`;
+      // Fumo
+      if (fumo === 'ex') penalita += 2;
+      else if (fumo === 'attuale') penalita += 5 + sigarette * 0.2;
 
-    // Grafico
-    document.getElementById('chartVita').style.display = 'block';
+      // Alimentazione
+      if (alimentazione === 'media') penalita += 2;
+      else if (alimentazione === 'malsana') penalita += 6;
 
-    if(chart) chart.destroy();
+      // Droghe/alcol
+      if (drogaAlcol === 'raro') penalita += 1;
+      else if (drogaAlcol === 'moderato') penalita += 3;
+      else if (drogaAlcol === 'frequente') penalita += 6;
 
-    chart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Vita trascorsa', 'Vita stimata rimanente'],
-        datasets: [{
-          data: [eta, vitaStimata],
-          backgroundColor: ['#007bff', '#28a745']
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom' },
-          tooltip: {
-            callbacks: {
-              label: context => `${context.label}: ${context.parsed} anni`
+      // Malattie croniche
+      if (diabete) penalita += 7;
+      if (ipertensione) penalita += 5;
+      if (cardiopatie) penalita += 8;
+
+      // Attività fisica
+      if (attivitaFisica === 'nessuna') penalita += 5;
+      else if (attivitaFisica === 'leggera') penalita += 2;
+      else if (attivitaFisica === 'intensa') penalita -= 3;
+
+      // Genetica familiare
+      if (geneticaFamiliare === 'si') penalita += 4;
+
+      // Fattori ambientali
+      if (fattoriAmbientali === 'medio') penalita += 3;
+      else if (fattoriAmbientali === 'alto') penalita += 7;
+
+      // Tipo di lavoro
+      if (tipoLavoro === 'moderato') penalita += 3;
+      else if (tipoLavoro === 'intenso') penalita += 6;
+      else if (tipoLavoro === 'esposizione') penalita += 8;
+
+      // Calcolo aspettativa di vita residua
+      let vitaStimata = Math.max(baseVita - penalita - eta, 0);
+
+      // Mostra risultato
+      risultato.textContent = 
+        `Età: ${eta} anni | BMI: ${bmi.toFixed(1)} (${bmiClasse}) | Aspettativa residua stimata: ${vitaStimata.toFixed(1)} anni`;
+
+      // Grafico
+      document.getElementById('chartVita').style.display = 'block';
+
+      if(chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Vita trascorsa', 'Vita stimata rimanente'],
+          datasets: [{
+            data: [eta, vitaStimata],
+            backgroundColor: ['#007bff', '#28a745']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.label}: ${ctx.parsed.toFixed(1)} anni`
+              }
             }
           }
         }
-      }
+      });
     });
-  });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

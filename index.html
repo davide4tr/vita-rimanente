@@ -2,81 +2,139 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Calcolatore Vita Rimanente</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: auto; padding: 20px; }
-    label, select, input { display: block; margin-top: 10px; }
-    button { margin-top: 20px; padding: 10px; font-size: 16px; }
-    .result { margin-top: 20px; font-weight: bold; }
+    body {
+      background: #f8f9fa;
+      padding-top: 40px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      max-width: 700px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-bottom: 30px;
+      font-weight: 700;
+      color: #343a40;
+    }
+    .result-text {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      color: #212529;
+    }
+    canvas {
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
-  <h1>Calcolatore Vita Rimanente</h1>
+  <div class="container">
+    <h1>Calcolatore Vita Rimanente</h1>
+    <form id="vitaForm" class="row g-3">
+      <div class="col-md-6">
+        <label for="eta" class="form-label">Età</label>
+        <input type="number" class="form-control" id="eta" min="0" max="120" required />
+      </div>
+      <div class="col-md-6">
+        <label for="genere" class="form-label">Genere</label>
+        <select class="form-select" id="genere" required>
+          <option value="maschio" selected>Maschio</option>
+          <option value="femmina">Femmina</option>
+        </select>
+      </div>
+      <div class="col-md-12">
+        <label for="stile" class="form-label">Stile di vita</label>
+        <select class="form-select" id="stile" required>
+          <option value="sano" selected>Molto sano</option>
+          <option value="medio">Normale</option>
+          <option value="scarso">Poco sano</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="fumo" class="form-label">Fumo</label>
+        <select class="form-select" id="fumo" required>
+          <option value="no" selected>Non fumo</option>
+          <option value="moderato">Moderato</option>
+          <option value="frequente">Frequente</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="alcol" class="form-label">Alcol</label>
+        <select class="form-select" id="alcol" required>
+          <option value="no" selected>Mai o raramente</option>
+          <option value="moderato">Moderato</option>
+          <option value="frequente">Frequente</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="droghe" class="form-label">Droghe</label>
+        <select class="form-select" id="droghe" required>
+          <option value="no" selected>No</option>
+          <option value="qualche">Qualche volta</option>
+          <option value="spesso">Spesso</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="malattie" class="form-label">Malattie croniche</label>
+        <select class="form-select" id="malattie" required>
+          <option value="no" selected>Nessuna</option>
+          <option value="lievi">Lieve</option>
+          <option value="gravi">Gravi</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="genetica" class="form-label">Genetica familiare</label>
+        <select class="form-select" id="genetica" required>
+          <option value="ottima" selected>Ottima (nonni longevi)</option>
+          <option value="media">Normale</option>
+          <option value="debole">Debole</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="peso" class="form-label">Obesità/Sovrappeso</label>
+        <select class="form-select" id="peso" required>
+          <option value="normale" selected>Normale</option>
+          <option value="sovrappeso">Sovrappeso</option>
+          <option value="obeso">Obeso</option>
+        </select>
+      </div>
+      <div class="col-12 d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary btn-lg mt-3">Calcola</button>
+      </div>
+    </form>
 
-  <label>Età: <input type="number" id="eta" /></label>
-  <label>Genere:
-    <select id="genere">
-      <option value="maschio">Maschio</option>
-      <option value="femmina">Femmina</option>
-    </select>
-  </label>
-  <label>Stile di vita:
-    <select id="stile">
-      <option value="sano">Molto sano</option>
-      <option value="medio">Normale</option>
-      <option value="scarso">Poco sano</option>
-    </select>
-  </label>
-  <label>Fumo: <select id="fumo">
-    <option value="no">Non fumo</option>
-    <option value="moderato">Moderato</option>
-    <option value="frequente">Frequente</option>
-  </select></label>
+    <div class="result-text" id="risultato"></div>
 
-  <label>Alcol: <select id="alcol">
-    <option value="no">Mai o raramente</option>
-    <option value="moderato">Moderato</option>
-    <option value="frequente">Frequente</option>
-  </select></label>
-
-  <label>Droghe: <select id="droghe">
-    <option value="no">No</option>
-    <option value="qualche">Qualche volta</option>
-    <option value="spesso">Spesso</option>
-  </select></label>
-
-  <label>Malattie croniche:
-    <select id="malattie">
-      <option value="no">Nessuna</option>
-      <option value="lievi">Lieve</option>
-      <option value="gravi">Gravi</option>
-    </select>
-  </label>
-
-  <label>Genetica familiare:
-    <select id="genetica">
-      <option value="ottima">Ottima (nonni longevi)</option>
-      <option value="media">Normale</option>
-      <option value="debole">Debole</option>
-    </select>
-  </label>
-
-  <label>Obesità/Sovrappeso:
-    <select id="peso">
-      <option value="normale">Normale</option>
-      <option value="sovrappeso">Sovrappeso</option>
-      <option value="obeso">Obeso</option>
-    </select>
-  </label>
-
-  <button onclick="calcola()">Calcola</button>
-  <div class="result" id="risultato"></div>
+    <canvas id="vitaChart" width="400" height="250" style="display:none;"></canvas>
+  </div>
 
   <script>
+    const form = document.getElementById('vitaForm');
+    const risultato = document.getElementById('risultato');
+    const ctx = document.getElementById('vitaChart').getContext('2d');
+    let chart = null;
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      calcola();
+    });
+
     function calcola() {
-      let base = 82;
+      let baseMaschio = 79; // aspettativa media maschio Italia
+      let baseFemmina = 84; // aspettativa media femmina Italia
+
       const eta = parseInt(document.getElementById("eta").value);
+      const genere = document.getElementById("genere").value;
       const stile = document.getElementById("stile").value;
       const fumo = document.getElementById("fumo").value;
       const alcol = document.getElementById("alcol").value;
@@ -85,30 +143,78 @@
       const genetica = document.getElementById("genetica").value;
       const peso = document.getElementById("peso").value;
 
-      if (stile === "scarso") base -= 6;
-      if (stile === "medio") base -= 2;
+      let base = genere === "maschio" ? baseMaschio : baseFemmina;
 
+      // Penalità per stile di vita
+      if (stile === "scarso") base -= 6;
+      else if (stile === "medio") base -= 2;
+
+      // Fumo
       if (fumo === "moderato") base -= 3;
       else if (fumo === "frequente") base -= 7;
 
+      // Alcol
       if (alcol === "moderato") base -= 1;
       else if (alcol === "frequente") base -= 4;
 
+      // Droghe
       if (droghe === "qualche") base -= 2;
       else if (droghe === "spesso") base -= 6;
 
+      // Malattie croniche
       if (malattie === "lievi") base -= 3;
       else if (malattie === "gravi") base -= 8;
 
+      // Genetica
       if (genetica === "media") base -= 2;
       else if (genetica === "debole") base -= 4;
 
+      // Peso
       if (peso === "sovrappeso") base -= 2;
       else if (peso === "obeso") base -= 5;
 
-      const rimanenti = Math.max(base - eta, 0);
-      document.getElementById("risultato").innerText = `Ti restano circa ${rimanenti} anni di vita, secondo i dati inseriti.`;
+      const anniRimanenti = Math.max(base - eta, 0);
+
+      risultato.textContent = `Ti restano circa ${anniRimanenti} anni di vita, secondo i dati inseriti.`;
+
+      // Mostra grafico
+      document.getElementById('vitaChart').style.display = 'block';
+
+      if (chart) {
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Vita trascorsa', 'Vita rimanente'],
+          datasets: [{
+            label: 'Aspettativa di vita',
+            data: [eta, anniRimanenti],
+            backgroundColor: ['#007bff', '#28a745'],
+            hoverOffset: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { font: { size: 14 } }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.label + ': ' + context.parsed + ' anni';
+                }
+              }
+            }
+          }
+        }
+      });
     }
   </script>
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
